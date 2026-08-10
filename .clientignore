@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+.venv/
+.pnpm-store/
+
+# Build output
+.next/
+dist/
+build/
+out/
+
+# Lock files
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Env a secrets
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# Cache
+.cache/
+.turbo/
+
+# Git
+.git/
+
+# Editor/IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
