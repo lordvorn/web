@@ -1,6 +1,4 @@
-const API_KEY = import.meta.env.VITE_GROQ_API_KEY
-const API_URL = 'https://api.groq.com/openai/v1/chat/completions'
-const MODEL = 'llama-3.3-70b-versatile'
+const API_URL = '/api/chat'
 
 export interface ChatMessage {
   role: 'system' | 'user' | 'assistant'
@@ -16,23 +14,25 @@ export async function streamChat(
   onToken: (token: string) => void,
   signal?: AbortSignal,
 ): Promise<void> {
+  // Přibalíme SYSTEM_PROMPT na začátek konverzace
+  const fullMessages: ChatMessage[] = [
+    { role: 'system', content: SYSTEM_PROMPT },
+    ...messages,
+  ]
+
   const res = await fetch(API_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${API_KEY}`,
     },
     body: JSON.stringify({
-      model: MODEL,
-      messages,
-      stream: true,
-      temperature: 0.4,
+      messages: fullMessages,
     }),
     signal,
   })
 
   if (!res.ok || !res.body) {
-    throw new Error(`Groq API error: ${res.status}`)
+    throw new Error(`API error: ${res.status}`)
   }
 
   const reader = res.body.getReader()
